@@ -1,0 +1,12 @@
+import styled from 'styled-components';
+
+const Container = styled.div`
+  width: 80%;
+  margin-right: auto;
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+`;
+
+export { Container };

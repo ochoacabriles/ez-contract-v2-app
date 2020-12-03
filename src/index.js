@@ -1,12 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { ApolloProvider } from '@apollo/client';
+import { BlockdemyUIProvider } from './providers/theme';
+import { UserProvider } from './providers/user';
+import client from './graphql';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+// Import fonts
+import 'fontsource-montserrat/200.css';
+import 'fontsource-montserrat/400.css';
+import 'fontsource-roboto';
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ApolloProvider client={client}>
+      <BlockdemyUIProvider>
+        <UserProvider>
+          <Router basename="/">
+            <App />
+          </Router>
+        </UserProvider>
+      </BlockdemyUIProvider>
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

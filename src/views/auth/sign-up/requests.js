@@ -8,4 +8,10 @@ const SIGN_UP = gql`
   }
 `;
 
-export { SIGN_UP };
+const TERMS = gql`
+  query terms {
+    terms
+  }
+`;
+
+export { SIGN_UP, TERMS };

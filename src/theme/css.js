@@ -1,8 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
-  
-  @import url("https://fonts.googleapis.com/css?family=Montserrat:200,300,400,500|Roboto:200,300,400,500");
+
   * {
     box-sizing: border-box;
   }

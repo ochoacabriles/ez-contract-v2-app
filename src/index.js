@@ -10,8 +10,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 // Import fonts
-import 'fontsource-montserrat/200.css';
-import 'fontsource-montserrat/400.css';
+import 'fontsource-montserrat';
 import 'fontsource-roboto';
 
 ReactDOM.render(

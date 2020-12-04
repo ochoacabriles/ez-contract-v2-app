@@ -1,17 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useApolloClient } from '@apollo/client';
 import Box from 'blockdemy-ui/box';
 import Button from 'blockdemy-ui/button';
 import Card from 'blockdemy-ui/card';
+import Checkbox from 'blockdemy-ui/checkbox';
 import Input from 'blockdemy-ui/input';
 import Loader from 'blockdemy-ui/loader';
 import Typography from 'blockdemy-ui/typography';
 import { MdEmail, MdVpnKey } from 'react-icons/md';
 import { IoMdEye, IoMdEyeOff} from 'react-icons/io';
 import { passwordRegex } from '../../../config/constants';
+import { toast } from '../../../providers/theme';
 import { useUser } from '../../../providers/user';
+import TermsModal from './terms-modal';
 import { 
   Container, 
   LogoContainer, 
@@ -19,18 +22,36 @@ import {
   RowItems, 
   RowContainer 
 } from './elements';
-import { SIGN_UP } from './requests';
+import { SIGN_UP, TERMS } from './requests';
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [terms, setTerms] = useState('');
   const { handleSubmit, register, errors, watch } = useForm();
-  const { mutate } = useApolloClient();
+  const { query, mutate } = useApolloClient();
 
   const { setToken } = useUser();
 
+  useEffect(() => {
+    const getTerms = async () => {
+      const { data: { terms } } = await query({
+        query: TERMS
+      });
+      setTerms(terms);
+    };
+    getTerms();
+  }, [query]);
+
   const onSubmit = async form => {
+    if (!acceptTerms) {
+      toast.danger('Error', 'Please read and accept the Terms of Service');
+      return;
+    }
+
     setSubmitting(true);
 
     const { email, firstName, lastName, password } = form;
@@ -149,9 +170,20 @@ const SignUp = () => {
             error={!!errors.confirmPassword?.message}
             message={errors.confirmPassword?.message}
           />
+          <Box display="flex" alignItems="center" mt={20}>
+            <Checkbox 
+              checked={acceptTerms}
+              onChange={({ target: { value } }) => setAcceptTerms(value)}
+            />
+            <Typography fontSize="0.8rem" ml={10} mt={-8}>
+              I accept ez-contract's
+            </Typography>
+            <Box clickable onClick={() => setShowModal(true)}>
+              <Typography fontSize="0.8rem" color="primary" ml={5} mt={-8}>Terms of Service</Typography>
+            </Box>
+          </Box>
           <Button
             uppercase={false}
-            mt={30}
             disabled={submitting}
             color="primary"
             variant="soft"
@@ -162,6 +194,7 @@ const SignUp = () => {
         </Box>
       </Card>
     </CardContainer>
+    <TermsModal active={showModal} setShowModal={setShowModal} terms={terms} />
   </Container>);
 };
 

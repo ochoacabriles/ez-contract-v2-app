@@ -48,5 +48,5 @@ jobs:
           aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
       # Copy the files from build folder to the S3 bucket
       - name: Deploy to S3
-        run: aws s3 sync . s3://guifter-frontend-develop --acl public-read
+        run: aws s3 sync . s3://ez-contract-web-app --acl public-read
         working-directory: react-github-actions-build

@@ -20,7 +20,7 @@ jobs:
           CI: true
       - name: Generate build
         env:
-          REACT_APP_API_URI: https://api.ez-contract.io/graphql
+          REACT_APP_API_URL: https://api.ez-contract.io/graphql
           NODE_PATH: ./src/
         run: yarn run build
       # Share artifact inside workflow

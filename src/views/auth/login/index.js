@@ -26,7 +26,7 @@ const Login = () => {
   const onSubmit = async userToLogin => {
     setSubmitting(true);
 
-    const { data: { login: { token } }, errors: loginErrors } = await query({
+    const { data, errors: loginErrors } = await query({
       query: LOG_IN,
       variables: {
         userToLogin,
@@ -37,6 +37,8 @@ const Login = () => {
     if (loginErrors) {
       setErrorMessage(loginErrors[0].message || 'Unknown error');
     } else {
+      const { login: { token } } = data;
+      console.log({ token })
       setToken(token);
     }
     setSubmitting(false);

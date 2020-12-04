@@ -26,21 +26,21 @@ const Login = () => {
   const onSubmit = async userToLogin => {
     setSubmitting(true);
 
-    const { data, errors: loginErrors } = await query({
-      query: LOG_IN,
-      variables: {
-        userToLogin,
-      },
-      fetchPolicy: 'network-only',
-    });
-
-    if (loginErrors) {
-      setErrorMessage(loginErrors[0].message || 'Unknown error');
-    } else {
+    try {
+      const { data } = await query({
+        query: LOG_IN,
+        variables: {
+          userToLogin,
+        },
+        fetchPolicy: 'network-only',
+      });
       const { login: { token } } = data;
       console.log({ token })
       setToken(token);
+    } catch (err) {
+      setErrorMessage(err.message || 'Unknown error');
     }
+
     setSubmitting(false);
   };
 

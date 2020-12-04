@@ -8,7 +8,6 @@ export const userContext = createContext({});
 
 const UserProvider = ({ children }) => {
   const [token, setToken] = useState(cookie.load('token'));
-
   const { data, loading, refetch } = useQuery(GET_USER, { skip: !token });
 
   return (

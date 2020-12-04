@@ -1,4 +1,5 @@
 import { useQuery } from '@apollo/client';
+import { Link } from 'react-router-dom';
 import Box from 'blockdemy-ui/box';
 import Progress from 'blockdemy-ui/progress';
 import Typography from 'blockdemy-ui/typography';
@@ -15,7 +16,12 @@ const Home = () => {
 
   return (
     <Container>
-      <Typography variant="h3" color="primary" mb={20}>Your tokens</Typography>
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={20}>
+        <Typography variant="h3" color="primary">Your tokens</Typography>
+        <Link to="/ez-token">
+          <Typography color="primary">New token</Typography>
+        </Link>
+      </Box>
       {(loading || !data) ? (
         <Box display="flex" flexDirection="column">
           <Typography mb={10} variant="muted">Wait a second while we load the information</Typography>

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import { ApolloProvider } from '@apollo/client';
 import { BlockdemyUIProvider } from './providers/theme';
 import { UserProvider } from './providers/user';
@@ -19,6 +20,11 @@ ReactDOM.render(
       <BlockdemyUIProvider>
         <UserProvider>
           <Router basename="/">
+            <Helmet>
+              <meta charSet="utf-8" />
+              <title>ez-contract.</title>
+              <link rel="canonical" href="https://app.ez-contract.io" />
+            </Helmet>
             <App />
           </Router>
         </UserProvider>

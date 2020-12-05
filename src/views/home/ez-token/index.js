@@ -48,6 +48,7 @@ const EzToken = () => {
     const [account]= await web3.eth.getAccounts();
     const estimatedGas = await web3.eth.estimateGas({ data: bytecode, from: account });
     const network = await web3.eth.net.getNetworkType();
+    const gasPrice = await web3.eth.getGasPrice();
 
     const decimals = 18;
 
@@ -60,7 +61,8 @@ const EzToken = () => {
     })
     .send({
       from: account,
-      gasPrice: estimatedGas
+      gas: estimatedGas,
+      gasPrice
     })
     .on('error', err => console.log(err))
     .on('transactionHash', async transactionHash => {

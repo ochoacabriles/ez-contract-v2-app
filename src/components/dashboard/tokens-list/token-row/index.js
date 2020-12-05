@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useApolloClient } from '@apollo/client';
 import Box from 'blockdemy-ui/box';
 import Loader from 'blockdemy-ui/loader';
@@ -12,19 +12,24 @@ const TokenRow = ({ token, refresh }) => {
   const [loading, setLoading] = useState();
   const { mutate } = useApolloClient();
   
-  const confirmToken = async () => {
-    setLoading(true);
-    try {
-      await mutate({
-        mutation: CONFIRM_TOKEN,
-        variables: { tokenId: token.id }
-      });
-      refresh();
-    } catch (err) {
-      toast.danger('Error', err.message);
+  useEffect(() => {
+    const confirmToken = async () => {
+      setLoading(true);
+      try {
+        await mutate({
+          mutation: CONFIRM_TOKEN,
+          variables: { tokenId: token.id }
+        });
+        refresh();
+      } catch (err) {
+        toast.danger('Error', err.message);
+      }
+      setLoading(false);
+    };
+    if (!token.address) {
+      confirmToken();
     }
-    setLoading(false);
-  };
+  }, [mutate, refresh, token]);
 
   return (
   <TableRow>
@@ -47,13 +52,9 @@ const TokenRow = ({ token, refresh }) => {
         ? <Loader size={10} />
         : (token.address 
           ? token.address 
-          : (<Box clickable onClick={confirmToken}>
-              <Typograhpy fontSize="0.85rem" color="primary">
-                Press here to confirm the contract and get the address
-              </Typograhpy>
-            </Box>
-          )
-        )
+          : <Typograhpy variant="muted">
+            Your token hasn't been confirmed. Try again later
+          </Typograhpy>)
       }
     </TableCell>
     <TableCell>

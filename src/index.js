@@ -15,15 +15,16 @@ import 'fontsource-roboto';
 
 ReactDOM.render(
   <React.StrictMode>
+    <Helmet>
+      <meta charSet="utf-8" />
+      <title>ez-contract.</title>
+      <link rel="canonical" href="https://app.ez-contract.io" />
+      <meta name="description" content="Create and deploy ethereum smart contracts with a few clicks!" />
+    </Helmet>
     <ApolloProvider client={client}>
       <BlockdemyUIProvider>
         <UserProvider>
           <Router basename="/">
-            <Helmet>
-              <meta charSet="utf-8" />
-              <title>ez-contract.</title>
-              <link rel="canonical" href="https://app.ez-contract.io" />
-            </Helmet>
             <App />
           </Router>
         </UserProvider>

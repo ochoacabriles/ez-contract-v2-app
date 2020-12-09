@@ -7,6 +7,7 @@ import { BlockdemyUIProvider } from './providers/theme';
 import { UserProvider } from './providers/user';
 import client from './graphql';
 import App from './App';
+import theme from './theme';
 import reportWebVitals from './reportWebVitals';
 
 // Import fonts
@@ -20,6 +21,7 @@ ReactDOM.render(
       <title>ez-contract.</title>
       <link rel="canonical" href="https://app.ez-contract.io" />
       <meta name="description" content="Create and deploy ethereum smart contracts with a few clicks!" />
+      <meta name="theme-color" content={theme.colors.primary} />
     </Helmet>
     <ApolloProvider client={client}>
       <BlockdemyUIProvider>

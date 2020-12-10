@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { Link } from 'react-router-dom';
 import Box from 'blockdemy-ui/box';
@@ -13,6 +14,8 @@ const Home = () => {
   const { data, loading, refetch } = useQuery(GET_TOKENS, { skip: !user.id});
   const info = data && data.tokensByUser.info;
   const results = data && data.tokensByUser.results;
+
+  useEffect(() => refetch(), [refetch]);
 
   return (
     <Container>

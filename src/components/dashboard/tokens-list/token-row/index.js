@@ -37,7 +37,7 @@ const TokenRow = ({ token, refresh }) => {
       <Box display="flex" alignItems="center">
         {token.name}
         {!token.address ? (
-          <Pill size="small" variant="soft" ml={5}>uncofirmed</Pill>
+          <Pill size="small" variant="soft" ml={5}>unconfirmed</Pill>
         ) : null}
       </Box>
     </TableCell>
@@ -51,7 +51,13 @@ const TokenRow = ({ token, refresh }) => {
       {loading 
         ? <Loader size={10} />
         : (token.address 
-          ? token.address 
+          ? <a 
+            href={`https://${token.network === 'mainnet' ? '' : token.network}.etherscan.io/address/${token.address}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {token.address}
+          </a>
           : <Typograhpy variant="muted">
             Your token hasn't been confirmed. Try again later
           </Typograhpy>)

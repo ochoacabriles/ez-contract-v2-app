@@ -35,7 +35,6 @@ const Login = () => {
         fetchPolicy: 'network-only',
       });
       const { login: { token } } = data;
-      console.log({ token })
       setToken(token);
     } catch (err) {
       setErrorMessage(err.message || 'Unknown error');

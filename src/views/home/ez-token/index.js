@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery, useApolloClient } from '@apollo/client';
 import Web3 from 'web3';
+import Box from 'blockdemy-ui/box';
 import Button from 'blockdemy-ui/button';
 import Input from 'blockdemy-ui/input';
 import Loader from 'blockdemy-ui/loader';
@@ -128,6 +129,12 @@ const EzToken = () => {
 
   return (
     <GeneralContainer>
+      <Typography variant="headingTitle" mt={20} color="primary">
+        ez-token
+      </Typography>
+      <Typography variant="muted" mt={10}>
+        Deploy basic ERC20 token contract
+      </Typography>
       <FormContainer onSubmit={handleSubmit}>
         <Input
           label="Token name"
@@ -152,13 +159,24 @@ const EzToken = () => {
           onChange={({ target: { value: supply } }) => setForm({ ...form, supply })}
           required
         />
-        <Button 
-          color="primary" 
-          mt="30px"
-          disabled={loading || queryLoading}
-        >
-          {(loading || queryLoading) ? <Loader size={10} /> : 'Deploy token'}
-        </Button>
+        <Box display="flex" justifyContent="space-between" alignItems="center" mt={30}>
+          <Button 
+            color="primary" 
+            disabled={loading || queryLoading}
+          >
+            {(loading || queryLoading) ? <Loader size={10} /> : 'Deploy token'}
+          </Button>
+          <Link to="/">
+            <Button 
+              type="button" 
+              color="primary"
+              disabled={loading}
+            >
+              Cancel
+            </Button>
+          </Link>
+
+        </Box>
       </FormContainer>
     </GeneralContainer>
   );

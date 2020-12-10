@@ -9,4 +9,9 @@ const StyledButton = styled(Button)`
   font-size: 0.7rem;
 `;
 
-export { StyledButton };
+const AddressContainer = styled.div`
+  white-space: nowrap;
+  overflow: hidden;
+`;
+
+export { StyledButton, AddressContainer };

@@ -17,11 +17,12 @@ const NavBarContainer = styled.div`
 `;
 
 const FooterContainer = styled.div`
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 40px;
+  height: 60px;
+  margin: 30px auto 0 auto;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  width: 60%;
+  border-top: 1px solid ${props => props.theme.colors.veryLightGrey};
   display: flex;
   justify-content: center;
   align-items: center;

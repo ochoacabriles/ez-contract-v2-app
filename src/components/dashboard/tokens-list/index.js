@@ -1,35 +1,14 @@
 import { Link } from 'react-router-dom';
 import Button from 'blockdemy-ui/button';
-import {
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody
-} from 'blockdemy-ui/table';
 import Typography from 'blockdemy-ui/typography';
-import TokenRow from './token-row';
-import { MessageContainer, TableContainer } from './elements';
+import TokenCard from './token-card';
+import { MessageContainer, GridContainer } from './elements';
 
 const TokensTable = ({ info, results, refresh }) => (
-  <TableContainer>
-    <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell>Name</TableCell>
-          <TableCell>Symbol</TableCell>
-          <TableCell>Network</TableCell>
-          <TableCell>Address</TableCell>
-          <TableCell>Supply</TableCell>
-          <TableCell>Actions</TableCell>
-        </TableRow>
-      </TableHead>
-      {info?.count > 0 ? (
-          <TableBody>
-            {results.map(token => <TokenRow token={token} key={token.id} refresh={refresh} />)}
-          </TableBody>
-        ) : null}
-    </Table>
+  <>
+    <GridContainer>
+      {results.map(token => <TokenCard key={token.id} token={token} refresh={refresh} />)}
+    </GridContainer>
     {(!info || info.count === 0) ? (
       <MessageContainer>
         <Typography variant="headingTitle">Oops! You haven't deployed any tokens yet.</Typography>
@@ -39,7 +18,7 @@ const TokensTable = ({ info, results, refresh }) => (
         </Link>
       </MessageContainer>
     ) : null}
-  </TableContainer>
+  </>
 );
 
 export default TokensTable;

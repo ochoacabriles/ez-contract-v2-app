@@ -3,7 +3,6 @@ import { useQuery } from '@apollo/client';
 import { useWeb3React } from '@web3-react/core';
 import { Link } from 'react-router-dom';
 import Box from 'blockdemy-ui/box';
-import Button from 'blockdemy-ui/button';
 import Progress from 'blockdemy-ui/progress';
 import Typography from 'blockdemy-ui/typography';
 import { useUser } from '../../../providers/user';

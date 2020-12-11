@@ -10,6 +10,7 @@ const GET_TOKENS = gql`
         id
         address
         proprietaryAddress
+        blockNumber
         name
         symbol
         supply

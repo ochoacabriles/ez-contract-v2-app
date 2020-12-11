@@ -25,11 +25,12 @@ const TokenCard = ({ token, refresh }) => {
         });
         refresh()
       } catch (err) {
+        console.log(err)
         // Pass
       }
       setLoading(false);
     };
-    if (!token.address) {
+    if (!token.blockNumber) {
       confirmToken();
     }
   }, [mutate, refresh, token]);
@@ -42,7 +43,7 @@ const TokenCard = ({ token, refresh }) => {
           <Typography variant="heading">
             {token.name}
           </Typography>
-          {!token.address ? (
+          {!token.blockNumber ? (
             <Pill size="small" variant="soft" ml={5}>unconfirmed</Pill>
           ) : null}
         </Box>

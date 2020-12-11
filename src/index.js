@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/client';
+import { Web3ReactProvider } from '@web3-react/core';
+import { getLibrary } from './providers/web3';
 import { BlockdemyUIProvider } from './providers/theme';
 import { UserProvider } from './providers/user';
 import client from './graphql';
@@ -17,9 +19,13 @@ ReactDOM.render(
     <ApolloProvider client={client}>
       <BlockdemyUIProvider>
         <UserProvider>
-          <Router basename="/">
-            <App />
-          </Router>
+          <Web3ReactProvider
+            getLibrary={getLibrary}
+          >
+            <Router basename="/">
+              <App />
+            </Router>
+          </Web3ReactProvider>
         </UserProvider>
       </BlockdemyUIProvider>
     </ApolloProvider>

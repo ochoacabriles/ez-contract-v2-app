@@ -1,26 +1,29 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery, useApolloClient } from '@apollo/client';
-import Web3 from 'web3';
+import { useWeb3React } from '@web3-react/core';
+import { ContractFactory } from '@ethersproject/contracts';
+import { parseUnits } from '@ethersproject/units';
 import Box from 'blockdemy-ui/box';
 import Button from 'blockdemy-ui/button';
 import Input from 'blockdemy-ui/input';
 import Loader from 'blockdemy-ui/loader';
 import Typography from 'blockdemy-ui/typography';
+import { networksMapping } from '../../../config/constants';
 import { MessageContainer, FormContainer, GeneralContainer } from './elements';
 import { GET_CONTRACT_SOURCE, ADD_TOKEN } from './requests';
 
 const EzToken = () => {
-  const [ethProvider, setEthProvider] = useState();
   const [loading, setLoading] = useState();
-  const [web3, setWeb3] = useState();
   const [form, setForm] = useState({
-    name: '',
-    symbol: '',
-    supply: 0
+    name: 'ez-token-ethers',
+    symbol: 'EZTE',
+    supply: 100
   });
   const [deployed, setDeployed] = useState();
   const [error, setError] = useState();
+  const { account, chainId, library } = useWeb3React();
+
   const [contractSourceId] = useState('5fc15896126ac0cf498e6660');
 
   const { mutate } = useApolloClient();
@@ -29,29 +32,36 @@ const EzToken = () => {
     variables: { contractSourceId }
   });
 
-  useEffect(() => {
-    setLoading(true);
-    if (window.ethereum) {
-      window.web3 = new Web3(window.ethereum);
-      window.ethereum.enable();
-      setWeb3(window.web3);
-      setEthProvider(true);
-    } else {
-      setEthProvider(false);
-    }
-    setLoading(false);
-  }, []);
-
   const deployContract = async () => {
     const { contractSource: { bytecode, abi } } = data;
     const { name, symbol, supply } = form;
-    const [account]= await web3.eth.getAccounts();
-    // const estimatedGas = await web3.eth.estimateGas({ data: bytecode, from: account });
-    const network = await web3.eth.net.getNetworkType();
-    // const gasPrice = await web3.eth.getGasPrice();
 
     const decimals = 18;
 
+    const tokenSupply = parseUnits(supply.toString(), 'ether');
+    const contract = new ContractFactory(JSON.parse(abi), bytecode, library.getSigner());
+
+    const deploydContract = await contract.deploy(name, symbol, decimals, tokenSupply);
+
+    const { address, deployTransaction: { hash: transactionHash } } = deploydContract;
+
+    const toreturn = {
+      address,
+      transactionHash,
+      contract: contractSourceId,
+      estimatedGas: 0,
+      network: networksMapping[chainId].toLowerCase(),
+      proprietaryAddress: account,
+      type: 'basic',
+      supply: parseInt(supply),
+      name,
+      symbol,
+      decimals: 18
+    }
+
+    return toreturn;
+/*
+    const network = networksMapping[networkId];
     const tokenContract = new web3.eth.Contract(JSON.parse(abi));
     const tokenSupply = web3.utils.toWei(supply, 'ether');
     return new Promise((resolve, reject) => tokenContract.deploy({
@@ -60,8 +70,6 @@ const EzToken = () => {
     })
     .send({
       from: account,
-      // gas: estimatedGas,
-      // gasPrice
     })
     .on('error', err => reject(err))
     .on('transactionHash', transactionHash => resolve({
@@ -76,7 +84,8 @@ const EzToken = () => {
       symbol,
       decimals: 18
     }))
-  )};
+
+  ) */};
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -84,12 +93,14 @@ const EzToken = () => {
 
       try {
         const tokenToAdd = await deployContract();
+        console.log(tokenToAdd)
         await mutate({
           mutation: ADD_TOKEN,
           variables: { tokenToAdd }
         });
         setDeployed(true);
       } catch (err) {
+        console.log(err)
         setError(true);
       }
       setLoading(false);
@@ -115,16 +126,6 @@ const EzToken = () => {
         <Button color="primary" mt="40px">Go to dashboard</Button>
       </Link>
     </MessageContainer>
-  )
-
-  if (!ethProvider) return (
-    <MessageContainer>
-    <Typography variant="header">Oops! Seems like you don't have and ETH provider in your browser.</Typography>
-    <Typography variant="muted" mt="20px">
-      Please install and configure <a href="https://metamask.io/download.html">metamask</a> in your browser and try 
-      again.
-    </Typography>
-  </MessageContainer>
   );
 
   return (
@@ -151,7 +152,6 @@ const EzToken = () => {
           required
         />
         <Input
-          type="number"
           name="Supply"
           label="Supply"
           placeholder={100}

@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 import { useQuery } from '@apollo/client';
+import { useWeb3React } from '@web3-react/core';
 import { Link } from 'react-router-dom';
 import Box from 'blockdemy-ui/box';
+import Button from 'blockdemy-ui/button';
 import Progress from 'blockdemy-ui/progress';
 import Typography from 'blockdemy-ui/typography';
 import { useUser } from '../../../providers/user';
@@ -15,17 +17,22 @@ const Home = () => {
   const info = data && data.tokensByUser.info;
   const results = data && data.tokensByUser.results;
 
+  const { active } = useWeb3React();
+
   useEffect(() => refetch(), [refetch]);
 
   return (
     <Container>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={20}>
         <Typography variant="h3" color="primary">Your tokens</Typography>
-        <Link to="/ez-token">
-          <Typography color="primary">New token</Typography>
-        </Link>
+        {active
+          ? <Link to="/ez-token">
+              <Typography color="primary">New token</Typography>
+            </Link>
+          : <Typography color="primary">Connect your wallet to launch tokens</Typography>
+          }
       </Box>
-      {(loading || !data) ? (
+      {(!data || loading) ? (
         <Box display="flex" flexDirection="column">
           <Typography mb={10} variant="muted">Wait a second while we load the information</Typography>
           <Progress color="info" indeterminate />

@@ -16,9 +16,9 @@ import { GET_CONTRACT_SOURCE, ADD_TOKEN } from './requests';
 const EzToken = () => {
   const [loading, setLoading] = useState();
   const [form, setForm] = useState({
-    name: 'ez-token-ethers',
-    symbol: 'EZTE',
-    supply: 100
+    name: '',
+    symbol: '',
+    supply: 0
   });
   const [deployed, setDeployed] = useState();
   const [error, setError] = useState();

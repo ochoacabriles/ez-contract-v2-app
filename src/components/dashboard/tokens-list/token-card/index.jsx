@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useApolloClient } from '@apollo/client';
+import { Link } from 'react-router-dom';
 import Box from 'blockdemy-ui/box';
+import Button from 'blockdemy-ui/button';
 import Pill from 'blockdemy-ui/pill';
 import Typography from 'blockdemy-ui/typography';
-import { Card, CardBody, CardHeader } from 'blockdemy-ui/card';
+import { Card, CardBody, CardHeader, CardFooter } from 'blockdemy-ui/card';
 import { useClipboard } from 'blockdemy-ui/hooks';
 import { MdDone, MdContentCopy } from 'react-icons/md';
 import theme from '../../../../theme';
@@ -25,7 +27,6 @@ const TokenCard = ({ token, refresh }) => {
         });
         refresh()
       } catch (err) {
-        console.log(err)
         // Pass
       }
       setLoading(false);
@@ -37,14 +38,14 @@ const TokenCard = ({ token, refresh }) => {
 
   return (
     <Card>
-      <CardHeader title={token.symbol} subtitle={token.network} />
+      <CardHeader title={token.name} subtitle={token.network} />
       <CardBody>
         <Box display="flex" mb={20}>
           <Typography variant="heading">
-            {token.name}
+            {token.symbol}
           </Typography>
           {!token.blockNumber ? (
-            <Pill size="small" variant="soft" ml={5}>unconfirmed</Pill>
+            <Pill size="small" variant="soft" ml={10}>unconfirmed</Pill>
           ) : null}
         </Box>
         {loading 
@@ -84,6 +85,21 @@ const TokenCard = ({ token, refresh }) => {
           </Typography>
         </Box>
       </CardBody>
+      <CardFooter>
+        {!token.isIco && token.blockNumber
+          ? (
+            <Link to={`/ez-ico-basic?tokenAddress=${token.address}&network=${token.network}&tokenId=${token.id}`}>
+              <Button 
+                variant="soft" 
+                color="primary"
+                size="small"
+              >
+                Launch ICO
+              </Button>
+            </Link>
+          ) : <Box height="24px" />
+        }
+      </CardFooter>
     </Card>
 
   )

@@ -10,4 +10,12 @@ const Container = styled.div`
   margin-top: 40px;
 `;
 
-export { Container };
+const MessageContainer = styled.div`
+  display: flex;
+  margin-top: 20px;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export { Container, MessageContainer };

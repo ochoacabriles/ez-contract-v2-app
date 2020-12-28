@@ -5,9 +5,10 @@ const networksMapping = {
   3: 'Ropsten',
   4: 'Rinkeby',
   5: 'Goerli',
-  42: 'Kovan'
+  42: 'Kovan',
+  1337: 'Local'
 };
 
-const supportedNetworks = [1, 3, 4, 5, 42];
+const supportedNetworks = [1, 3, 4, 5, 42, 1337];
 
 export { passwordRegex, networksMapping, supportedNetworks };
